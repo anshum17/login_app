@@ -1,0 +1,79 @@
+
+<html>
+
+  <body>
+    <div id="login_app">
+      <div style="width:200px">
+        <h1>Login App</h1>
+      </div>
+      <form method="post" action="/login/validate">
+
+        <div id="container">
+          <div class="email" style="padding:5px">
+            Email <span style="margin-left: 28px">:</span> <input id="email" type="text" name="login[name]" size="30" placeholder="abc@gmail.com" type="text" ><br/>
+          </div>
+          <div class="password" style="padding:5px ; margin-bottom:5px">
+            Password : <input id="password" type="password" name="login[name]" size="30" placeholder="@abc.123" type="text"><br />
+          </div>
+
+          <button class="btn" type="button" id="btn_in" onclick="sign_in()" style="background:darkgrey">Sign In</button>
+          <%= link_to 'Sign Up', new_login_path , :class => "btn", :style => "background:darkgrey" %>
+        </div>
+      </form>  
+    </div>
+  </body>
+
+
+  <script>
+    // $(document).ready(function(){
+      
+     
+        function sign_in(){
+          if(!$("#email").val() || !$("#password").val())
+            alert("Email/Password required")
+          else{
+            $.ajax({
+              type    : "POST",
+              data    : {
+                        'email' : $("#email").val(),
+                        'password' : $("#password").val()
+              },
+              url     : "/login/validate",
+              async   : true,
+              success : function(data){
+                  if(data["status"] == "true"){
+                    alert("You are successfully logged in");
+
+                    // $.ajax({
+                    //   url : "/login/logged_in",
+                    //   type: "POST",
+                    //   data: {"email" : $("#email").val()},
+                    //   success:function(data){
+                    //     console.log("success", data);
+                    //   },
+                    //   failure:function(){
+                    //     console.log("failed");
+                    //   }
+                    // });
+                    // $("#container").hide();
+                     window.open("http://en.wikipedia.org/wiki/Lacie_Heart","_self");
+                  }
+                  else
+                    alert(data["message"]);
+              },
+              failure : function(e){
+                  console.log("sorry",e.message);
+              }
+            });
+        }
+      }
+    // });
+  </script>
+
+  
+</html>
+
+
+
+
+

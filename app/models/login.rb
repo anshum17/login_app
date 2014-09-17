@@ -14,6 +14,7 @@ class Login < ActiveRecord::Base
   end
 
   def self.validate_entry(param)
+    
   	email = param[:email]
   	password = Digest::MD5.hexdigest(param[:password])
   	@all_login = Login.all

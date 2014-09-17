@@ -18,7 +18,7 @@
           <div class="button">
             <button class="btn" type="button" id="btn_in"  style="background:darkgrey">Sign In</button>
             <%= link_to 'Sign Up', new_login_path , :class => "btn", :style => "background:darkgrey" %>
-            <span id="forgot" style="padding:27px"><u>Forgot Password?</u></span>
+            <span id="forgot" style="cursor:pointer ; padding:27px"><u>Forgot Password?</u></span>
           </div>
         </div>
       </form>  
@@ -29,21 +29,21 @@
   <script>
     $('document').ready(function(){
       
-        
-        
-        data = {
-                'email' : $("#email").val(),
-                'password' : $("#password").val()
-               }
+
         $("#btn_in").on('click',function(){
+
           if(!$("#email").val() || !$("#password").val())
             alert("Email/Password required")
           else{
             $.ajax({
               type    : "POST",
-              data    : data,
+              data    : {
+                        'email' : $("#email").val(),
+                        'password' : $("#password").val()
+                        },
               url     : "/login/validate",
               success : function(data){
+          
                   if(data["status"]){
                     alert("You are successfully logged in");
                       window.open("/profile","_self")
@@ -71,7 +71,11 @@
               }
             });
         }
+        else
+          alert("Please enter a valid Email id");
       });
+
+      
 
       $("#password").keyup(function(event){
         if(event.keyCode == 13)

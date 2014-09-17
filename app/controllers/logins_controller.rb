@@ -2,7 +2,7 @@ class LoginsController < ApplicationController
   # GET /logins
   # GET /logins.json
 
-  before_filter :check_login_status , :only => [:logout, :profile]
+  before_filter :check_login_status , :only => [:logout, :profile, :edit]
 
   
 
@@ -64,7 +64,21 @@ class LoginsController < ApplicationController
 
   # PUT /logins/1
   # PUT /logins/1.json
-  
+  def update
+    @login = Login.find(params[:id])
+
+    respond_to do |format|
+      
+      if @login.update_attributes(params[:login])
+        debugger
+        format.html { redirect_to @login, notice: 'Info was successfully updated.' }
+        format.json { head :no_content }
+      else
+        format.html { render action: "edit" }
+        format.json { render json: @login.errors, status: :unprocessable_entity }
+      end
+    end
+  end
 
   # DELETE /logins/1
   # DELETE /logins/1.json
@@ -72,13 +86,14 @@ class LoginsController < ApplicationController
 
   def validate
     validate_check = Login.validate_entry(params)
+    
     if validate_check[:status]
       session[:email] = validate_check[:email]
       #redirect_to "/profile"
       #session[:password] = validate_check[:password]
       render :json => validate_check, :status => 200
     else
-      render :json => { "message" => validate_check[:message] }, :status => 400
+      render :json => validate_check
       #redirect_to "/logins", :notice => validate_check[:message]
     end
   end

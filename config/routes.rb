@@ -10,6 +10,8 @@ Blog::Application.routes.draw do
   get "/profile" => "logins#profile"
   
   get "/logout" => "logins#logout"
+
+  post "/send_mail" => "logins#send_mail"
   #get "home/index"
 
   # The priority is based upon order of creation:

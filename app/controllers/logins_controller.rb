@@ -51,6 +51,8 @@ class LoginsController < ApplicationController
 
     respond_to do |format|
       if @login.save
+        # Tell the UserMailer to send a welcome email after save
+        UserMailer.welcome_email(@login).deliver
         format.html { redirect_to @login, notice: 'Login was successfully created.' }
         format.json { render json: @login, status: :created, location: @login }
       else
@@ -70,11 +72,11 @@ class LoginsController < ApplicationController
 
   def validate
     validate_check = Login.validate_entry(params)
-    if validate_check[:status] == "true"
+    if validate_check[:status]
       session[:email] = validate_check[:email]
       #redirect_to "/profile"
       #session[:password] = validate_check[:password]
-      render :json => {}, :status => 200
+      render :json => validate_check, :status => 200
     else
       render :json => { "message" => validate_check[:message] }, :status => 400
       #redirect_to "/logins", :notice => validate_check[:message]
@@ -87,12 +89,17 @@ class LoginsController < ApplicationController
     redirect_to "/logins"
   end
 
-#get "/login/:email/logged_in"
+
   def profile
 
     # @login = Login.find_by_email(params[:email])
     # #redirect_to :actiom => ""
     # render "/login/" + params[:email] + "/logged_in"
+  end
+
+  def send_mail
+    UserMailer.forgot_password(params).deliver
+    redirect_to "/logins"
   end
 end
 

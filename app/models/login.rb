@@ -5,7 +5,7 @@ class Login < ActiveRecord::Base
   #validates :email, email_format: { message: "Please enter a valid Email" }
   validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
 
-  validate :email, :uniqueness => true
+  validates :email, :uniqueness => true
   validates :mobile_no, :numericality => true,
   						:length => {:mimimum => 10 , :maximum => 11}
   
@@ -32,18 +32,18 @@ class Login < ActiveRecord::Base
 
   	output = Hash.new
   	if flag2
-  		output[:status] = "true"
+  		output[:status] = true
   		output[:message]= "Email and password matches"
   		#session[:valid] = "true"
     	output[:email] = email
     	output[:password] = password
   	
   	elsif flag1
-  		output[:status] = "false"
+  		output[:status] = false
   		output[:message]= "Email and password do not match.  Please try again."
   		
   	else
-  		output[:status] = "false"
+  		output[:status] = false
   		output[:message]= "Email does not exist. Please Sign up first"
   	end
   	output 

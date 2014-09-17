@@ -9,15 +9,17 @@
       <form method="post" action="/login/validate">
 
         <div id="container">
-          <div class="email" style="padding:5px">
+          <div class="information" style="padding:5px">
             Email <span style="margin-left: 28px">:</span> <input id="email" type="text" name="login[name]" size="30" placeholder="abc@gmail.com" type="text" ><br/>
           </div>
-          <div class="password" style="padding:5px ; margin-bottom:5px">
+          <div class="information" style="padding:5px ; margin-bottom:5px">
             Password : <input id="password" type="password" name="login[name]" size="30" placeholder="@abc.123" type="text"><br />
           </div>
-
-          <button class="btn" type="button" id="btn_in" onclick="sign_in()" style="background:darkgrey">Sign In</button>
-          <%= link_to 'Sign Up', new_login_path , :class => "btn", :style => "background:darkgrey" %>
+          <div class="button">
+            <button class="btn" type="button" id="btn_in" onclick="sign_in()" style="background:darkgrey">Sign In</button>
+            <%= link_to 'Sign Up', new_login_path , :class => "btn", :style => "background:darkgrey" %>
+            <span id="forgot" style="padding:27px"><u>Forgot Password?</u></span>
+          </div>
         </div>
       </form>  
     </div>
@@ -27,36 +29,24 @@
   <script>
     // $(document).ready(function(){
       
-     
+        
+        
+        data = {
+                'email' : $("#email").val(),
+                'password' : $("#password").val()
+               }
         function sign_in(){
           if(!$("#email").val() || !$("#password").val())
             alert("Email/Password required")
           else{
             $.ajax({
               type    : "POST",
-              data    : {
-                        'email' : $("#email").val(),
-                        'password' : $("#password").val()
-              },
+              data    : data,
               url     : "/login/validate",
-              async   : true,
               success : function(data){
-                  if(data["status"] == "true"){
+                  if(data["status"]){
                     alert("You are successfully logged in");
-
-                    // $.ajax({
-                    //   url : "/login/logged_in",
-                    //   type: "POST",
-                    //   data: {"email" : $("#email").val()},
-                    //   success:function(data){
-                    //     console.log("success", data);
-                    //   },
-                    //   failure:function(){
-                    //     console.log("failed");
-                    //   }
-                    // });
-                    // $("#container").hide();
-                     window.open("http://en.wikipedia.org/wiki/Lacie_Heart","_self");
+                      window.open("/profile","_self")
                   }
                   else
                     alert(data["message"]);
@@ -67,8 +57,40 @@
             });
         }
       }
+
+      $("#forgot").on('click',function(){
+        
+        if($("#email").val()){
+            $.ajax({
+              type   : "POST",
+              data   : data,
+              url    : "/send_mail",
+              success: function(e){
+                alert("mail with new password has been sent to your registered mail id. Please check!");
+                window.open("/logins","_self")
+              }
+            });
+        }
+      });
     // });
   </script>
+  <style type="text/css">
+  #container{
+    margin-left   : 35%;
+    margin-bottom : 10%;
+    margin-top    : 10%;
+  }
+
+  .information{
+    margin    : 0 0 10px;
+    width     :  312px;
+    height    : 38px;
+    background: #e5e5e5;
+    border-radius: 5px;
+  }
+
+  
+  </style>
 
   
 </html>

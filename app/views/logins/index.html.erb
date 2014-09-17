@@ -16,7 +16,7 @@
             Password : <input id="password" type="password" name="login[name]" size="30" placeholder="@abc.123" type="text"><br />
           </div>
           <div class="button">
-            <button class="btn" type="button" id="btn_in" onclick="sign_in()" style="background:darkgrey">Sign In</button>
+            <button class="btn" type="button" id="btn_in"  style="background:darkgrey">Sign In</button>
             <%= link_to 'Sign Up', new_login_path , :class => "btn", :style => "background:darkgrey" %>
             <span id="forgot" style="padding:27px"><u>Forgot Password?</u></span>
           </div>
@@ -27,7 +27,7 @@
 
 
   <script>
-    // $(document).ready(function(){
+    $('document').ready(function(){
       
         
         
@@ -35,7 +35,7 @@
                 'email' : $("#email").val(),
                 'password' : $("#password").val()
                }
-        function sign_in(){
+        $("#btn_in").on('click',function(){
           if(!$("#email").val() || !$("#password").val())
             alert("Email/Password required")
           else{
@@ -56,7 +56,7 @@
               }
             });
         }
-      }
+      });
 
       $("#forgot").on('click',function(){
         
@@ -72,7 +72,13 @@
             });
         }
       });
-    // });
+
+      $("#password").keyup(function(event){
+        if(event.keyCode == 13)
+          $("#btn_in").trigger('click');
+      });
+
+    });
   </script>
   <style type="text/css">
   #container{

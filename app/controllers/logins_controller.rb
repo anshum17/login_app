@@ -70,7 +70,7 @@ class LoginsController < ApplicationController
     respond_to do |format|
       
       if @login.update_attributes(params[:login])
-        debugger
+        
         format.html { redirect_to @login, notice: 'Info was successfully updated.' }
         format.json { head :no_content }
       else
@@ -113,7 +113,9 @@ class LoginsController < ApplicationController
   end
 
   def send_mail
-    UserMailer.forgot_password(params).deliver
+
+    UserMailer.forgot_password(params[:email]).deliver
+    Login.where(:email => params[:email]).update_all(:password => "#123.Anshrox")
     redirect_to "/logins"
   end
 end

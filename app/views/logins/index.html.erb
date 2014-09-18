@@ -9,10 +9,10 @@
       <form method="post" action="/login/validate">
 
         <div id="container">
-          <div class="information" style="padding:5px">
+          <div class="information">
             Email <span style="margin-left: 28px">:</span> <input id="email" type="text" name="login[name]" size="30" placeholder="abc@gmail.com" type="text" ><br/>
           </div>
-          <div class="information" style="padding:5px ; margin-bottom:5px">
+          <div class="information">
             Password : <input id="password" type="password" name="login[name]" size="30" placeholder="@abc.123" type="text"><br />
           </div>
           <div class="button">
@@ -63,7 +63,10 @@
         if($("#email").val()){
             $.ajax({
               type   : "POST",
-              data   : data,
+              data   : {
+                        'email' : $("#email").val(),
+                        'password' : $("#password").val()
+                        },
               url    : "/send_mail",
               success: function(e){
                 alert("mail with new password has been sent to your registered mail id. Please check!");
@@ -93,10 +96,11 @@
 
   .information{
     margin    : 0 0 10px;
-    width     :  312px;
-    height    : 38px;
+    width     : 312px;
+    height    : 35px;
     background: #e5e5e5;
     border-radius: 5px;
+    padding   : 5px;
   }
 
   
